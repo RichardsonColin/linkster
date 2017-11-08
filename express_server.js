@@ -1,7 +1,8 @@
 const express = require("express");
-const app = express();
 const bodyParser = require("body-parser");
 var PORT = process.env.PORT || 8080; // default port 8080
+
+const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
@@ -24,7 +25,7 @@ var urlDatabase = {
 app.get("/", (req, res) => {
   res.end("Hello!");
 });
-app.get("/urls_index", (req, res) => {
+app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
 });
@@ -36,7 +37,7 @@ app.get("/u/:shortURL", (req, res) => {
   let longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
-app.get("/urls_new", (req, res) => {
+app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 app.post("/urls", (req, res) => {
@@ -45,6 +46,13 @@ app.post("/urls", (req, res) => {
   let randomString = generateRandomString();
   urlDatabase[randomString] = `http://${longUrlString}`;
   res.redirect(`urls/${randomString}`);         // Respond with 'Ok' (we will replace this)
+});
+app.post("/urls/:id/delete", (req, res) => {
+  //let templateVarsTwo = { urls: urlDatabase };
+  const shortUrlDelete = req.params['id'];
+  //console.log(shortUrlDelete);
+  delete urlDatabase[shortUrlDelete];
+  res.redirect("/urls");
 });
 
 app.listen(PORT, () => {
