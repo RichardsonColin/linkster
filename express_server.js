@@ -33,7 +33,7 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 app.get("/u/:shortURL", (req, res) => {
-  let longURL = req.body.longURL;
+  let longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
 app.get("/urls_new", (req, res) => {
@@ -43,7 +43,7 @@ app.post("/urls", (req, res) => {
   console.log(req.body.longURL);  // debug statement to see POST parameters
   let longUrlString = req.body.longURL;
   let randomString = generateRandomString();
-  urlDatabase[randomString] = `html://${longUrlString}`;
+  urlDatabase[randomString] = `http://${longUrlString}`;
   res.redirect(`urls/${randomString}`);         // Respond with 'Ok' (we will replace this)
 });
 
