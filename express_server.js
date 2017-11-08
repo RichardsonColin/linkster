@@ -33,7 +33,7 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 app.get("/u/:shortURL", (req, res) => {
-  console.log(req.body);
+  let longURL = req.body.longURL;
   res.redirect(longURL);
 });
 app.get("/urls_new", (req, res) => {
@@ -44,7 +44,7 @@ app.post("/urls", (req, res) => {
   let longUrlString = req.body.longURL;
   let randomString = generateRandomString();
   urlDatabase[randomString] = `html://${longUrlString}`;
-  res.send("OK");         // Respond with 'Ok' (we will replace this)
+  res.redirect(`urls/${randomString}`);         // Respond with 'Ok' (we will replace this)
 });
 
 app.listen(PORT, () => {
