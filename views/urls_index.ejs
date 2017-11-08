@@ -8,11 +8,12 @@
   <h2>URLS And Their Shorthand</h2>
     <ul>
       <% for (var url in urls) { %>
-        <form method="POST" action="/urls/b2xVn2/delete">
-          <li><%= `${urls[url]} - ${url}` %><input style="display: inline;" type="submit" value="Delete"></li>
-        </form>
+        <li><%= `${urls[url]} - ${url}` %>
+          <form method="POST" action="/urls/<%= url %>/delete" style="display:inline;">
+            <button type="submit">Delete URL</button>
+          </form>
+        </li>
       <% } %>
-
     </ul>
     <a href="./urls/new">Create a URL</a>
 </body>
