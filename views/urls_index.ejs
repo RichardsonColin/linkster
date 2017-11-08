@@ -9,12 +9,13 @@
     <ul>
       <% for (var url in urls) { %>
         <li><%= `${urls[url]} - ${url}` %>
+          <a href="/urls/<%= url %>">Edit</a>
           <form method="POST" action="/urls/<%= url %>/delete" style="display:inline;">
             <button type="submit">Delete URL</button>
           </form>
         </li>
       <% } %>
     </ul>
-    <a href="./urls/new">Create a URL</a>
+    <a href="/urls/new">Create a URL</a>
 </body>
 </html>
