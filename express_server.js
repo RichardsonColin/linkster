@@ -39,11 +39,37 @@ function generateRandomString() {
   return randomString;
 }
 
-
-
+app.get("/login", (req, res) => {
+  let templateVars = { user: users[req.cookies['user_id']] };
+  //console.log(users);
+  res.render('urls_login', templateVars);
+});
 app.post("/login", (req, res) => {
-  res.cookie('userId', req.body['user_id']);
-  res.redirect("/urls");
+  //console.log(req.body)
+  for(let each in users) {
+    if (req.body.email === users[each].email)
+      if(req.body.password === users[each].password) {
+        res.cookie('user_id', users[each].id);
+        res.redirect("/");
+      }
+  }
+    res.status(403);
+    res.send('Wrong password and email');
+  // for(each in users) {
+  //   if (req.body.email !== users[each].email) {
+  //     res.status(403);
+  //     res.send('No email exists');
+  //   }
+  // }
+
+    // if(req.body.email !== users[each].email) {
+    //   console.log(users[each].email);
+    //   res.status(403);
+    //   res.send('No existing email');
+    // } else else if(req.body.password === users[each].password) {
+    //
+    // }
+
 })
 app.post("/logout", (req, res) => {
   res.clearCookie('user_id', req.cookies['user_id']);
