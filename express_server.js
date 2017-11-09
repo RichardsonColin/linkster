@@ -42,11 +42,11 @@ function generateRandomString() {
 
 
 app.post("/login", (req, res) => {
-  res.cookie('userId', req.body.user_id);
+  res.cookie('userId', req.body['user_id']);
   res.redirect("/urls");
 })
 app.post("/logout", (req, res) => {
-  res.clearCookie('userId', req.cookies.user_id);
+  res.clearCookie('user_id', req.cookies['user_id']);
   console.log(req.cookies);
   res.redirect("/urls");
 });
@@ -74,15 +74,16 @@ app.post("/register", (req, res) => {
                     password: req.body.password
                   };
   res.cookie('user_id', userId);
+  console.log(req.cookies['user_id']);
   res.redirect("/urls");
 });
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase, username: req.cookies["username"] };
+  let templateVars = { urls: urlDatabase, user: users[req.cookies['user_id']] };
   //console.log(templateVars);
   res.render("urls_index", templateVars);
 });
 app.get("/urls/new", (req, res) => {
-  let templateVars = { urls: urlDatabase, username: req.cookies["username"] };
+  let templateVars = { urls: urlDatabase, user: users[req.cookies['user_id']] };
   //console.log(req);
   res.render("urls_new", templateVars);
 });
@@ -94,7 +95,7 @@ app.post("/urls", (req, res) => {
   res.redirect(`urls/${randomString}`);         // Respond with 'Ok' (we will replace this)
 });
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { urls: urlDatabase, shortURL: req.params.id, username: req.cookies["username"] };
+  let templateVars = { urls: urlDatabase, shortURL: req.params.id, user: users[req.cookies['user_id']] };
   res.render("urls_show", templateVars);
 });
 app.post("/urls/:id", (req, res) => {
