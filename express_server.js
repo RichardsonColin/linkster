@@ -40,6 +40,11 @@ app.get("/", (req, res) => {
 app.get("/register", (req, res) => {
   res.render("urls_registration");
 });
+app.post("/register", (req, res) => {
+  console.log(req.body);
+
+  res.redirect("/urls")
+});
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase, username: req.cookies["username"] };
   //console.log(templateVars);
