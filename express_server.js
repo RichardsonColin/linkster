@@ -16,6 +16,19 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+const users = {
+  "userID1": {
+    id: "userID1",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur"
+  },
+ "userID2": {
+    id: "userID2",
+    email: "user2@example.com",
+    password: "dishwasher-funk"
+  }
+};
+
 function generateRandomString() {
   const possibleChoices = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let randomString = "";
@@ -26,12 +39,15 @@ function generateRandomString() {
   return randomString;
 }
 
+
+
 app.post("/login", (req, res) => {
-  res.cookie('username', req.body.username);
+  res.cookie('userId', req.body.user_id);
   res.redirect("/urls");
 })
 app.post("/logout", (req, res) => {
-  res.clearCookie('username', req.cookies.username);
+  res.clearCookie('userId', req.cookies.user_id);
+  console.log(req.cookies);
   res.redirect("/urls");
 });
 app.get("/", (req, res) => {
@@ -41,9 +57,24 @@ app.get("/register", (req, res) => {
   res.render("urls_registration");
 });
 app.post("/register", (req, res) => {
-  console.log(req.body);
+  if(req.body.email === '' || req.body.password === '') {
+    res.status(400);
+    res.send('None shall pass');
+  }
+  for(each in users) {
+    if(users[each].email === req.body.email) {
+      res.status(400);
+      res.send('Email exists');
+    }
+  }
 
-  res.redirect("/urls")
+  userId = `userID${generateRandomString()}`;
+  users[userId] = { id: userId,
+                    email: req.body.email,
+                    password: req.body.password
+                  };
+  res.cookie('user_id', userId);
+  res.redirect("/urls");
 });
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase, username: req.cookies["username"] };
