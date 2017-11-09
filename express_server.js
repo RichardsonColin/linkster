@@ -11,8 +11,13 @@ app.use(cookieParser());
 //app.use(morgan('dev'));
 app.set("view engine", "ejs");
 
+const urlDatabase = {
+  "b2xVn2": "http://www.lighthouselabs.ca",
+  "9sm5xK": "http://www.google.com"
+};
+
 function generateRandomString() {
-  const possibleChoices = "abcdefghijklmnopqrstuvwxyz0123456789";
+  const possibleChoices = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let randomString = "";
 
   for(var i = 0; i <= 5; i++) {
@@ -20,11 +25,6 @@ function generateRandomString() {
   }
   return randomString;
 }
-
-const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
 
 app.post("/login", (req, res) => {
   res.cookie('username', req.body.username);
@@ -36,6 +36,9 @@ app.post("/logout", (req, res) => {
 });
 app.get("/", (req, res) => {
   res.end("Hello!");
+});
+app.get("/register", (req, res) => {
+  res.render("urls_registration");
 });
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase, username: req.cookies["username"] };
@@ -74,7 +77,6 @@ app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[shortUrlDelete];
   res.redirect("/urls");
 });
-
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
