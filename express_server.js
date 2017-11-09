@@ -12,8 +12,16 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {
+    shortURL: "b2xVn2",
+    longURL: "http://www.lighthouselabs.ca",
+    userId: "userID1"
+  },
+  "9sm5xk": {
+    shortURL: "9sm5xK",
+    longURL: "http://www.google.com",
+    userId: "userID2"
+  }
 };
 
 const users = {
@@ -22,7 +30,7 @@ const users = {
     email: "user@example.com",
     password: "purple-monkey-dinosaur"
   },
- "userID2": {
+  "userID2": {
     id: "userID2",
     email: "user2@example.com",
     password: "dishwasher-funk"
@@ -103,9 +111,15 @@ app.get("/urls/new", (req, res) => {
 });
 app.post("/urls", (req, res) => {
   //console.log(req.body.longURL);  // debug statement to see POST parameters
+  console.log(req.cookies);
   let longUrlString = req.body.longURL;
   let randomString = generateRandomString();
-  urlDatabase[randomString] = `http://${longUrlString}`;
+  urlDatabase[randomString] = {
+    shortURL: randomString,
+    longURL: `http://${longUrlString}`,
+    userId: req.cookies['user_id']
+  };
+  console.log(urlDatabase);
   res.redirect(`urls/${randomString}`);         // Respond with 'Ok' (we will replace this)
 });
 app.get("/urls/:id", (req, res) => {

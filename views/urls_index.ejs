@@ -8,7 +8,7 @@
   <h2>URLS And Their Shorthand</h2>
     <ul>
       <% for (var url in urls) { %>
-        <li><%= `${urls[url]} - ${url}` %>
+        <li><%= `${urls[url].longURL} - ${url}` %>
           <a href="/urls/<%= url %>">Edit</a>
           <form method="POST" action="/urls/<%= url %>/delete" style="display:inline;">
             <button type="submit">Delete URL</button>
