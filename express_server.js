@@ -45,7 +45,7 @@ app.get("/login", (req, res) => {
   res.render('urls_login', templateVars);
 });
 app.post("/login", (req, res) => {
-  //console.log(req.body)
+  // Add different for email and password.
   for(let each in users) {
     if (req.body.email === users[each].email)
       if(req.body.password === users[each].password) {
@@ -55,20 +55,6 @@ app.post("/login", (req, res) => {
   }
     res.status(403);
     res.send('Wrong password and email');
-  // for(each in users) {
-  //   if (req.body.email !== users[each].email) {
-  //     res.status(403);
-  //     res.send('No email exists');
-  //   }
-  // }
-
-    // if(req.body.email !== users[each].email) {
-    //   console.log(users[each].email);
-    //   res.status(403);
-    //   res.send('No existing email');
-    // } else else if(req.body.password === users[each].password) {
-    //
-    // }
 
 })
 app.post("/logout", (req, res) => {
