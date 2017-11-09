@@ -3,7 +3,7 @@
 <head>
   <title>TinyApp</title>
 </head>
-<body>
+<body style="font-size:20px; padding:50px;">
     <% include ./partials/_header.ejs %>
   <h2>Short URL: <%= shortURL %></h2>
   <form action="/urls/<%= shortURL %>" method="POST">
