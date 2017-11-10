@@ -164,8 +164,9 @@ app.post("/urls/:id", (req, res) => {
   res.redirect("/urls");
 });
 app.get("/u/:shortURL", (req, res) => {
-  let longURL = urlDatabase[req.params.shortURL];
-  let templateVars = { urls: urlDatabase };
+  let longURL = urlDatabase[req.params.shortURL].longURL;
+  console.log(longURL);
+  //let templateVars = { urls: urlDatabase };
   res.redirect(longURL);
 });
 app.post("/urls/:id/delete", (req, res) => {
