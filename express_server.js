@@ -47,6 +47,21 @@ function generateRandomString() {
   return randomString;
 }
 
+function urlsForUser(id) {
+  let userUrls = {};
+
+  for(let each in urlDatabase) {
+    if(id === urlDatabase[each].userId) {
+      userUrls[each] = {
+        shortURL: urlDatabase[each].shortURL,
+        longURL: urlDatabase[each].longURL,
+        userId: id
+      };
+    }
+  }
+  return userUrls;
+}
+
 app.get("/login", (req, res) => {
   let templateVars = { user: users[req.cookies['user_id']] };
   //console.log(users);
@@ -81,7 +96,7 @@ app.post("/register", (req, res) => {
     res.status(400);
     res.send('None shall pass');
   }
-  for(each in users) {
+  for(let each in users) {
     if(users[each].email === req.body.email) {
       res.status(400);
       res.send('Email exists');
@@ -97,7 +112,13 @@ app.post("/register", (req, res) => {
   res.redirect("/urls");
 });
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase, user: users[req.cookies['user_id']] };
+  let ownUrls = urlsForUser(req.cookies['user_id']);
+  let templateVars = { urls: ownUrls, user: users[req.cookies['user_id']] };
+
+  if(!req.cookies['user_id']) {
+    res.send("Please login first to view this page.")
+  }
+
   res.render("urls_index", templateVars);
 });
 app.get("/urls/new", (req, res) => {
