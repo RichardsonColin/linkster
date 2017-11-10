@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
+const bcrypt =  require('bcrypt');
 //const morgan = require('morgan');
 const PORT = process.env.PORT || 8080; // default port 8080
 
@@ -28,12 +29,12 @@ const users = {
   "userID1": {
     id: "userID1",
     email: "user@example.com",
-    password: "purple-monkey-dinosaur"
+    password: "$2a$10$4r.e4dxdQu0VY2LmMeM5xeNZfgrbz.c.MDrojG9AjMbPGAsY5q/uy"
   },
   "userID2": {
     id: "userID2",
     email: "user2@example.com",
-    password: "dishwasher-funk"
+    password: "$2a$10$mQM.DgNpPU8XgBQeJoNzLuVnlXuJUQ/vPiPIW9mZGyhSPxwIc5lsW"
   }
 };
 
@@ -68,10 +69,13 @@ app.get("/login", (req, res) => {
   res.render('urls_login', templateVars);
 });
 app.post("/login", (req, res) => {
+  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+  bcrypt.compareSync(req.body.password, hashedPassword);
+
   // Add different for email and password.
   for(let each in users) {
     if (req.body.email === users[each].email)
-      if(req.body.password === users[each].password) {
+      if(bcrypt.compareSync(req.body.password, users[each].password)) {
         res.cookie('user_id', users[each].id);
         res.redirect("/");
       }
@@ -102,11 +106,12 @@ app.post("/register", (req, res) => {
       res.send('Email exists');
     }
   }
+  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
 
   userId = `userID${generateRandomString()}`;
   users[userId] = { id: userId,
                     email: req.body.email,
-                    password: req.body.password
+                    password: hashedPassword
                   };
   res.cookie('user_id', userId);
   res.redirect("/urls");
