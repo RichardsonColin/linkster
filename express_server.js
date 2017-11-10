@@ -141,6 +141,16 @@ app.post("/urls", (req, res) => {
 });
 app.get("/urls/:id", (req, res) => {
   let templateVars = { urls: urlDatabase, shortURL: req.params.id, user: users[req.cookies['user_id']] };
+
+  if(!req.cookies['user_id']) {
+    res.send("Please login first to view this page.")
+  }
+  if(req.params.id === urlDatabase[req.params.id].shortURL){
+    if(req.cookies['user_id'] !== urlDatabase[req.params.id].userId) {
+      res.send("You are not allowed to view this url.")
+    }
+  }
+
   res.render("urls_show", templateVars);
 });
 app.post("/urls/:id", (req, res) => {
