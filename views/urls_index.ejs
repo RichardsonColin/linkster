@@ -9,13 +9,9 @@
     <ul>
       <% for (var url in urls) { %>
         <li><%= `${urls[url].longURL} - ${url}` %>
-          <% if(urls[url].userId === user.id) { %>
           <a href="/urls/<%= url %>">Edit</a>
-          <% } %>
           <form method="POST" action="/urls/<%= url %>/delete" style="display:inline;">
-          <% if(urls[url].userId === user.id) { %>
             <button type="submit">Delete URL</button>
-          <% } %>
           </form>
         </li>
       <% } %>

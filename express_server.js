@@ -73,7 +73,6 @@ function urlsForUser(id) {
 
 app.get("/login", (req, res) => {
   let templateVars = { user: users[req.session.user_id] };
-  console.log(req.session);
   res.render('urls_login', templateVars);
 });
 app.post("/login", (req, res) => {
@@ -84,7 +83,9 @@ app.post("/login", (req, res) => {
   for(let each in users) {
     if (req.body.email === users[each].email)
       if(bcrypt.compareSync(req.body.password, users[each].password)) {
-        res.cookie('user_id', users[each].id);
+        //res.cookie('user_id', users[each].id);
+        req.session.user_id = users[each].id;
+        console.log(req.session.user_id);
         res.redirect("/");
       }
   }
@@ -93,8 +94,7 @@ app.post("/login", (req, res) => {
 
 })
 app.post("/logout", (req, res) => {
-  res.clearCookie('user_id', req.cookies['user_id']);
-  console.log(req.cookies);
+  res.clearCookie('user_id', req.session.user_id = null);
   res.redirect("/urls");
 });
 app.get("/", (req, res) => {
@@ -121,22 +121,23 @@ app.post("/register", (req, res) => {
                     email: req.body.email,
                     password: hashedPassword
                   };
-  res.cookie('user_id', userId);
+  req.session.user_id = userId;
   res.redirect("/urls");
 });
 app.get("/urls", (req, res) => {
-  let ownUrls = urlsForUser(req.cookies['user_id']);
-  let templateVars = { urls: ownUrls, user: users[req.cookies['user_id']] };
+  let storedCookie = req.session.user_id;
+  let ownUrls = urlsForUser(storedCookie);
+  let templateVars = { urls: ownUrls, user: users[req.session.user_id] };
 
-  if(!req.cookies['user_id']) {
+  if(!req.session.user_id) {
     res.send("Please login first to view this page.")
   }
 
   res.render("urls_index", templateVars);
 });
 app.get("/urls/new", (req, res) => {
-  let templateVars = { urls: urlDatabase, user: users[req.cookies['user_id']] };
-  if(req.cookies['user_id'] === undefined) {
+  let templateVars = { urls: urlDatabase, user: users[req.session.user_id] };
+  if(req.session.user_id === undefined) {
     res.redirect('/login');
   }
   res.render("urls_new", templateVars);
@@ -148,18 +149,18 @@ app.post("/urls", (req, res) => {
   urlDatabase[randomString] = {
     shortURL: randomString,
     longURL: `http://${longUrlString}`,
-    userId: req.cookies['user_id']
+    userId: req.session.user_id
   };
   res.redirect(`urls/${randomString}`);         // Respond with 'Ok' (we will replace this)
 });
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { urls: urlDatabase, shortURL: req.params.id, user: users[req.cookies['user_id']] };
+  let templateVars = { urls: urlDatabase, shortURL: req.params.id, user: users[req.session.user_id] };
 
-  if(!req.cookies['user_id']) {
+  if(!req.session.user_id) {
     res.send("Please login first to view this page.")
   }
   if(req.params.id === urlDatabase[req.params.id].shortURL){
-    if(req.cookies['user_id'] !== urlDatabase[req.params.id].userId) {
+    if(req.session.user_id !== urlDatabase[req.params.id].userId) {
       res.send("You are not allowed to view this url.")
     }
   }
@@ -172,7 +173,7 @@ app.post("/urls/:id", (req, res) => {
   urlDatabase[shortURL] = {
     shortURL: shortURL,
     longURL: `http://${longURL}`,
-    userId: req.cookies['user_id']
+    userId: req.session.user_id
   };
   res.redirect("/urls");
 });
