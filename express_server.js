@@ -94,12 +94,10 @@ app.post("/register", (req, res) => {
                     password: req.body.password
                   };
   res.cookie('user_id', userId);
-  console.log(req.cookies['user_id']);
   res.redirect("/urls");
 });
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase, user: users[req.cookies['user_id']] };
-  //console.log(templateVars);
   res.render("urls_index", templateVars);
 });
 app.get("/urls/new", (req, res) => {
@@ -111,7 +109,6 @@ app.get("/urls/new", (req, res) => {
 });
 app.post("/urls", (req, res) => {
   //console.log(req.body.longURL);  // debug statement to see POST parameters
-  console.log(req.cookies);
   let longUrlString = req.body.longURL;
   let randomString = generateRandomString();
   urlDatabase[randomString] = {
@@ -119,7 +116,6 @@ app.post("/urls", (req, res) => {
     longURL: `http://${longUrlString}`,
     userId: req.cookies['user_id']
   };
-  console.log(urlDatabase);
   res.redirect(`urls/${randomString}`);         // Respond with 'Ok' (we will replace this)
 });
 app.get("/urls/:id", (req, res) => {
@@ -129,7 +125,11 @@ app.get("/urls/:id", (req, res) => {
 app.post("/urls/:id", (req, res) => {
   let shortURL = req.params.id;
   let longURL = req.body['longURL'];
-  urlDatabase[shortURL] = `http://${longURL}`;
+  urlDatabase[shortURL] = {
+    shortURL: shortURL,
+    longURL: `http://${longURL}`,
+    userId: req.cookies['user_id']
+  };
   res.redirect("/urls");
 });
 app.get("/u/:shortURL", (req, res) => {
