@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>TinyApp</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+  <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+  <title>Linkster</title>
 </head>
 <body style="font-size:20px; padding:50px;">
-    <% include ./partials/_header.ejs %>
-  <h2>Short URL: <%= shortURL %></h2>
-  <form action="/urls/<%= shortURL %>" method="POST">
-    <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
-    <input type="submit" value="Submit">
-  </form>
+  <% include ./partials/_header.ejs %>
+    <h2>Short URL: <%= shortURL %></h2>
+    <h2>Long URL: <%= urls[shortURL].longURL %></h2>
+    <br>
+    <h3>Update this long URL?</h3>
+    <form action="/urls/<%= shortURL %>" method="POST">
+      <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
+      <input type="submit" value="Submit">
+    </form>
 </body>
 </html>

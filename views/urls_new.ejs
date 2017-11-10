@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head></head>
-  <body style="font-size:20px; padding:50px;">
-    <% include ./partials/_header.ejs %>
-    <form action="/urls" method="POST" style="margin:150px;">
+<head>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+  <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+  <title>Linkster</title>
+</head>
+<body style="font-size:20px; padding:50px;">
+  <% include ./partials/_header.ejs %>
+  <br>
+  <form action="/urls" method="POST">
+    <h3>Generate a brand new short URL with any URL!</h3>
       <label for="longURL">Enter a URL:</label>
       <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
       <input type="submit" value="Submit">
-    </form>
-  </body>
+  </form>
+</body>
 </html>

@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>TinyApp</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+  <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+  <title>Linkster</title>
 </head>
 <body style="font-size:20px; padding:50px;">
-    <% include ./partials/_header.ejs %>
+  <% include ./partials/_header.ejs %>
   <h2>URLS And Their Shorthand</h2>
     <ul>
       <% for (var url in urls) { %>
         <li><%= `${urls[url].longURL} - ${url}` %>
           <a href="/urls/<%= url %>">Edit</a>
-          <form method="POST" action="/urls/<%= url %>/delete" style="display:inline;">
-            <button type="submit">Delete URL</button>
-          </form>
+            <form method="POST" action="/urls/<%= url %>/delete" style="display:inline;">
+              <button type="submit">Delete URL</button>
+            </form>
         </li>
       <% } %>
     </ul>

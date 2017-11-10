@@ -1,9 +1,11 @@
-<h1>TinyApp</h1>
-  <a href="/register">Register</a>
-  <a href="/login">Login</a>
-
+<h1>Linkster</h1>
+  <% if(!user) { %>
+    <a href="/register" style="border: 3px solid purple;">Register</a>
+    <a href="/login" style="border: 3px solid purple;margin: 20px;">Login</a>
+   <% } %>
   <% if(user) { %>
     <form action="/logout" method="POST">
-      <label for="login">Logged in as: <%= user.id %></label> <input type="submit" value="Logout">
+      <label for="login" style="display:inline;">Logged in as: <%= user.email %></label>
+      <input type="submit" value="Logout">
     </form>
   <% } %>
