@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser');
+//const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const bcrypt =  require('bcrypt');
 //const morgan = require('morgan');
 const PORT = process.env.PORT || 8080; // default port 8080
@@ -8,7 +9,14 @@ const PORT = process.env.PORT || 8080; // default port 8080
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: ["sessionTest"]
+
+  // Cookie Options
+  //maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
+//app.use(cookieParser());
 //app.use(morgan('dev'));
 app.set("view engine", "ejs");
 
@@ -64,8 +72,8 @@ function urlsForUser(id) {
 }
 
 app.get("/login", (req, res) => {
-  let templateVars = { user: users[req.cookies['user_id']] };
-  //console.log(users);
+  let templateVars = { user: users[req.session.user_id] };
+  console.log(req.session);
   res.render('urls_login', templateVars);
 });
 app.post("/login", (req, res) => {
