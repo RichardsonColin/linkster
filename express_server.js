@@ -164,7 +164,6 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  //console.log(req.body.longURL);  // debug statement to see POST parameters
   let longUrlString = req.body.longURL;
   let randomString = generateRandomString();
   urlDatabase[randomString] = {
@@ -173,7 +172,7 @@ app.post("/urls", (req, res) => {
     userId: req.session.user_id
   };
 
-  res.redirect(`urls/${randomString}`);         // Respond with 'Ok' (we will replace this)
+  res.redirect(`urls/${randomString}`);
 });
 
 app.get("/urls/:id", (req, res) => {
