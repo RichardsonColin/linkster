@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 //const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const bcrypt =  require('bcrypt');
+const methodOverride = require('method-override');
 //const morgan = require('morgan');
 const PORT = process.env.PORT || 8080;
 
