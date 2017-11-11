@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 8080;
 
 const app = express();
 
+app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSession({
   name: 'session',
@@ -119,7 +120,7 @@ app.get("/register", (req, res) => {
   res.render("urls_registration");
 });
 
-app.post("/register", (req, res) => {
+app.put("/register", (req, res) => {
   if(req.body.email === '' || req.body.password === '') {
     res.status(400);
     res.send('Please enter an email and password.');
@@ -164,7 +165,7 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
-app.post("/urls", (req, res) => {
+app.put("/urls", (req, res) => {
   let longUrlString = req.body.longURL;
   let randomString = generateRandomString();
   urlDatabase[randomString] = {
@@ -190,7 +191,7 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-app.post("/urls/:id", (req, res) => {
+app.put("/urls/:id", (req, res) => {
   let shortURL = req.params.id;
   let longURL = req.body['longURL'];
   urlDatabase[shortURL] = {
@@ -207,7 +208,7 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-app.post("/urls/:id/delete", (req, res) => {
+app.delete("/urls/:id", (req, res) => {
   const shortUrlDelete = req.params['id'];
   delete urlDatabase[shortUrlDelete];
   res.redirect("/urls");

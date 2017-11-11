@@ -13,7 +13,7 @@
       <% for (var url in urls) { %>
         <li><%= `${urls[url].longURL} - ${url}` %>
           <a href="/urls/<%= url %>">Edit</a>
-            <form method="POST" action="/urls/<%= url %>/delete" style="display:inline;">
+            <form method="POST" action="/urls/<%= url %>?_method=DELETE" style="display:inline;">
               <button type="submit">Delete URL</button>
             </form>
         </li>
