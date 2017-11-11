@@ -90,7 +90,6 @@ app.post("/login", (req, res) => {
     if (req.body.email === users[each].email)
       if(bcrypt.compareSync(req.body.password, users[each].password)) {
         req.session.user_id = users[each].id;
-        console.log(req.session.user_id);
         res.redirect("/urls");
       }
       if(req.body.email === users[each].email && !bcrypt.compareSync(req.body.password, users[each].password)) {
@@ -109,7 +108,13 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.end("Hello!");
+  if(req.session.user_id) {
+    res.redirect("/urls");
+  }
+
+  if(!req.session.user_id) {
+    res.redirect("/login");
+  }
 });
 
 app.get("/register", (req, res) => {
@@ -215,5 +220,5 @@ app.delete("/urls/:id", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`Linkster app listening on port ${PORT}!`);
 });

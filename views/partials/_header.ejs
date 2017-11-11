@@ -1,8 +1,8 @@
 <h1><a href="/urls">Linkster</a></h1>
-  <% if(!user) { %>
-    <a href="/register" style="border: 3px solid purple;">Register</a>
-    <a href="/login" style="border: 3px solid purple;margin: 20px;">Login</a>
-   <% } %>
+<% if(!user) { %>
+  <a href="/register" style="border: 3px solid purple;">Register</a>
+  <a href="/login" style="border: 3px solid purple;margin: 20px;">Login</a>
+  <% } %>
   <% if(user) { %>
     <form action="/logout" method="POST">
       <label for="login" style="display:inline;">Logged in as: <%= user.email %></label>
