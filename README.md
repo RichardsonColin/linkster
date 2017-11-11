@@ -4,8 +4,8 @@ Linkster is a full stack web application built with Node and Express that allows
 
 ## Final Product
 
-!["Description"](#)
-!["Description"](#)
+!["Screenshot of the URLs page."](https://github.com/RyukyuColin/tiny-app/blob/master/docs/urls-page.png?raw=true)
+!["Screenshot of URLs creator page."](https://github.com/RyukyuColin/tiny-app/blob/master/docs/create_urls-page.png?raw=true)
 
 ## Dependencies
 
